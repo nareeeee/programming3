@@ -27,4 +27,4 @@ class LivingCreature {
         }
         return found;
     }
-}
+} 
