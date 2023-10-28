@@ -150,11 +150,6 @@ module.exports = class Ligthing extends LivingCreature{
                 ligthingArr.splice(i, 1);
 
             }
-            for (var i in grassArr) {
-                if (Grass.x == grassArr[i].x && Grass.y == grassArr[i].y) {
-                    grassArr.splice(i, 1)
-                }
-            }
         }
     }
 }

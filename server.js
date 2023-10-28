@@ -60,15 +60,17 @@ var GrassEater = require('./GrassEater')
 var Ligthing = require('./ligthing')
 var Predator = require('./predator')
 var Tsunami = require('./tsunami')
+var Human = require('./human')
 
 grassArr = []
 grassEaterArr = []
 predatorArr = []
 ligthingArr = []
 tsunamiArr = []
+humanArr = []
 matrix = [];
 sideX = 35
-sideY= 70
+sideY = 70
 side = 15;
 
 function createMatrix() {
@@ -77,7 +79,7 @@ function createMatrix() {
         for (var j = 0; j < sideY; j++) {
             matrix[i].push(0)
         }
-    } 
+    }
     function characters(index, count) {
         for (let a = 0; a < count; a++) {
             var v = Math.floor(random(sideX))
@@ -90,6 +92,7 @@ function createMatrix() {
     characters(2, 20)
     characters(3, 20)
     characters(5, 2)
+    characters(6, 50)
 
     for (var y = 0; y < matrix.length; ++y) {
         for (var x = 0; x < matrix[y].length; ++x) {
@@ -98,28 +101,33 @@ function createMatrix() {
                 grassArr.push(gr);
             }
             else if (matrix[y][x] == 2) {
-                var grEa = new GrassEater(x, y, 1)
+                var grEa = new GrassEater(x, y, 2)
                 grassEaterArr.push(grEa)
             }
             else if (matrix[y][x] == 3) {
-                var pre = new Predator(x, y, 1)
+                var pre = new Predator(x, y, 3)
                 predatorArr.push(pre)
             }
             else if (matrix[y][x] == 4) {
-                var L = new Ligthing(x, y, 1)
+                var L = new Ligthing(x, y, 4)
                 ligthingArr.push(L)
             }
             else if (matrix[y][x] == 5) {
-                var T = new Tsunami(x, y, 1)
+                var T = new Tsunami(x, y, 5)
                 tsunamiArr.push(T)
+            }
+            else if (matrix[y][x] == 6) {
+            
+                var H = new Human(x, y, 6)
+                humanArr.push(H)
             }
         }
     }
 }
 
-createMatrix()
 
-function playGame(){
+
+function playGame() {
     for (var i in grassArr) {
         grassArr[i].mul()
     }
@@ -134,13 +142,19 @@ function playGame(){
         ligthingArr[i].mul()
     }
     for (var i in tsunamiArr) {
-
         tsunamiArr[i].kill()
     }
-
+    for (var i in humanArr) {
+        humanArr[i].eat()
+    }
     io.emit('MATRIX', matrix)
 }
 
+io.on("connection", function (socket) {
+    createMatrix()
+    socket.emit("MATRIX", matrix)
 
+    setInterval(function () { playGame() }, 1000)
+})
 
-setInterval(function(){playGame()}, 1000)
+// io.on("connection", ChangeColors())

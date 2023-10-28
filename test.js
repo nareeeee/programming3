@@ -19,7 +19,7 @@
 // function ..
 
 function keydown(evt) {
-    console.log("You printed " + evt.key);
+    // console.log("You printed " + evt.key);
     }
    
  window.onkeydown = keydown;
